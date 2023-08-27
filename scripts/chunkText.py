@@ -7,7 +7,7 @@ def save_as_txt(content, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(content)
 
-def split_text_into_files(text, words_per_file=5000, output_folder='output'):
+def split_text_into_files(text, words_per_file=500, output_folder='output'):
     words = text.split()
     num_files = len(words) // words_per_file + (1 if len(words) % words_per_file else 0)
     
