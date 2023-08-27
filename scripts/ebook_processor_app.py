@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 from pathlib import Path
+import shutil
 import parseebook
 import breakUpLongSentences
 import chunkText
@@ -38,10 +39,23 @@ def chunk_text(modified_txt_path):
     # Read from the modified text file
     text_content = chunkText.read_from_txt(modified_txt_path)
     
+    # Get the ebook's name
+    ebook_name = uploaded_file.name.rsplit('.', 1)[0]
+    output_folder = f'output/{ebook_name}'
+    
     # Split the text into multiple files
-    chunkText.split_text_into_files(text_content)
+    chunkText.split_text_into_files(text_content, output_folder=output_folder)
+    
+    # Create a zip archive of the output folder
+    shutil.make_archive(output_folder, 'zip', output_folder)
+    zip_file = f"{output_folder}.zip"
     
     st.write('Text chunked successfully')
+    
+    # Make the zip file available for download
+    with open(zip_file, 'rb') as f:
+        bytes = f.read()
+    st.download_button('Download Zip File', data=bytes, file_name=f"{ebook_name}.zip", mime='application/zip')
 
 # Streamlit app
 st.title('Ebook Processor')
