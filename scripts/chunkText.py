@@ -17,6 +17,6 @@ def split_text_into_files(text, words_per_file=5000, output_folder='output'):
         start_idx = i * words_per_file
         end_idx = (i+1) * words_per_file
         chunk = ' '.join(words[start_idx:end_idx])
-        filename = f"{output_folder}/output_{i+1}.txt"
+        filename = f"{output_folder}/{output_folder}{i+1}.txt"
         save_as_txt(chunk, filename)
         print(f"Saved {filename}")
