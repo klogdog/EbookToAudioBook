@@ -17,10 +17,3 @@ def split_text_into_files(text, words_per_file=5000, base_filename='output'):
         filename = f"{base_filename}_{i+1}.txt"
         save_as_txt(chunk, filename)
         print(f"Saved {filename}")
-
-# Read from the text file
-txt_path = 'path_to_your_text_file.txt'
-text_content = read_from_txt(txt_path)
-
-# Split the text into multiple files
-split_text_into_files(text_content)
