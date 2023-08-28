@@ -6,6 +6,8 @@ import parseebook
 import breakUpLongSentences
 import chunkText
 import googleCloudTextToWav
+import downloadAllBlobs
+import combineWaveFiles
 import multiprocessing
 from multiprocessing import Pool
 
@@ -140,3 +142,14 @@ if uploaded_file is not None:
             # Apply the process_file function to each file in the output_folder
             pool.starmap(process_file, [(file_name, output_folder, projectID, location, bucketName) for file_name in sorted(os.listdir(output_folder), key=lambda x: int(x.replace(ebook_name, '').replace('.txt', '')))])
         st.write('Text converted to WAV successfully')
+
+    # Download All Blobs
+    if st.button('Download All Blobs'):
+        st.write('Downloading all blobs...')
+        downloadAllBlobs.download_all_files(bucketName, "wave")
+        st.write('All blobs downloaded successfully')
+    # Combine Wave Files
+    if st.button('Combine Wave files'):
+        st.write('Combining wave files...')
+        combineWaveFiles.combine_wav_files(uploaded_file.name.rsplit('.', 1)[0])
+        st.write('wav file written successfully')
