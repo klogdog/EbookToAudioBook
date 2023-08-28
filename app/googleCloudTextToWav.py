@@ -15,7 +15,7 @@
 from google.cloud import texttospeech
 from google.cloud import storage
 
-def synthesize_long_audio(project_id, location, bucketName, text, output_file_name):
+def synthesize_long_audio(project_id, location, bucketName, textToSpeak, output_file_name):
     """
     Synthesizes long input, writing the resulting audio to `output_gcs_uri`.
 
@@ -28,7 +28,9 @@ def synthesize_long_audio(project_id, location, bucketName, text, output_file_na
         return
     client = texttospeech.TextToSpeechLongAudioSynthesizeClient()
 
-    input = texttospeech.SynthesisInput(text)
+    input = texttospeech.SynthesisInput(
+        text=textToSpeak
+    )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16
     )

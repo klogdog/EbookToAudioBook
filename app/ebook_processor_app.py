@@ -120,13 +120,14 @@ if uploaded_file is not None:
         # Get the ebook's name
         ebook_name = uploaded_file.name.rsplit('.', 1)[0]
         output_folder = f'output/{ebook_name}'      
-      
+
         # Convert text in each file to WAV
-        for file_name in os.listdir(output_folder):
+        for file_name in sorted(os.listdir(output_folder), key=lambda x: int(x.replace({ebook_name}, '').replace('.txt', ''))):
             file_path = os.path.join(output_folder, file_name)
             if file_path.endswith('.txt'):
                 output_wav_name = os.path.splitext(file_name)[0]
                 text = chunkText.read_from_txt(file_path)
+                text = text.replace('..', '.') # Remove double periods
                 googleCloudTextToWav.synthesize_long_audio(projectID, location, bucketName, text, output_wav_name)
         
         st.write('Text converted to WAV successfully')
