@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from google.cloud import texttospeech
-
+from google.cloud import storage
 
 def synthesize_long_audio(project_id, location, bucketName, text, output_file_name):
     """
@@ -23,6 +23,9 @@ def synthesize_long_audio(project_id, location, bucketName, text, output_file_na
 
     """
     output_gcs_uri = 'gs://' + bucketName + '/' + output_file_name + '.wav'
+    if(file_exists_in_gcs(bucketName, output_file_name + '.wav')):
+        print("File {output_file_name} exists in GCS bucket. Skipping text-to-speech conversion.")
+        return
     client = texttospeech.TextToSpeechLongAudioSynthesizeClient()
 
     input = texttospeech.SynthesisInput(text)
@@ -52,3 +55,16 @@ def synthesize_long_audio(project_id, location, bucketName, text, output_file_na
         "\nFinished processing, check your GCS bucket to find your audio file! Printing what should be an empty result: ",
         result,
     )
+
+def file_exists_in_gcs(bucket_name, file_name):
+    """
+    Checks if a file exists in a Google Cloud Storage bucket.
+
+    :param bucket_name: Name of the GCS bucket.
+    :param file_name: Name of the file to check.
+    :return: True if the file exists, False otherwise.
+    """
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(file_name)
+    return blob.exists()
