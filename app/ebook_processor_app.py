@@ -72,6 +72,9 @@ def chunk_text(modified_txt_path):
 # Streamlit app
 st.title('Ebook Processor')
 
+# ProjectID input
+projectID = st.text_input('Enter ProjectID')
+
 # Location dropdown
 location = st.selectbox('Select Location', locations)
 
