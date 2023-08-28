@@ -22,3 +22,11 @@ docker run -p 8501:8501 ebook-processor
 
 Open a browser and navigate to the streamlit app
 localhost:8501
+
+Upload your desired .epub file
+Parse the ebook
+Breakup the sentences
+Chunk the text
+Download the zip
+
+You now have a chuncked text of the ebook which is ready to be consumed by Google wavenet :)
