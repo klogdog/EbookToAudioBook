@@ -1,7 +1,7 @@
 import os
 import wave
 
-def combine_wav_files(directory, output_filename):
+def combine_wav_files(directory, output_filename, ebook_name):
     """
     Combine all .wav files in a directory into a single .wav file.
     
@@ -10,7 +10,7 @@ def combine_wav_files(directory, output_filename):
     """
     # List all files in the directory and filter only the .wav files
     files = [f for f in os.listdir(directory) if f.endswith('.wav')]
-    files = sorted(files)  # Sorting to combine in order
+    files = sorted(files, key=lambda x: int(x.replace(ebook_name, '').replace('.wav', '')))
     
     # Open the first file to get properties
     with wave.open(os.path.join(directory, files[0]), 'rb') as w:
