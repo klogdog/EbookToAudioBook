@@ -125,7 +125,7 @@ if uploaded_file is not None:
 
         # Convert text in each file to WAV
         # Create a pool of processes
-        availableCores = multiprocessing.cpu_count() - 1
+        availableCores = multiprocessing.cpu_count() // 2
         if availableCores < 1:
             availableCores = 1
         with Pool(processes=availableCores ) as pool:
