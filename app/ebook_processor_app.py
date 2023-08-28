@@ -6,6 +6,8 @@ import parseebook
 import breakUpLongSentences
 import chunkText
 import googleCloudTextToWav
+import multiprocessing
+from multiprocessing import Pool
 
 # Create a folder to store the uploaded files
 os.makedirs('uploads', exist_ok=True)
@@ -70,6 +72,14 @@ def chunk_text(modified_txt_path):
         bytes = f.read()
     st.download_button('Download Zip File', data=bytes, file_name=f"{ebook_name}.zip", mime='application/zip')
 
+def process_file(file_name, output_folder, projectID, location, bucketName):
+    file_path = os.path.join(output_folder, file_name)
+    if file_path.endswith('.txt'):
+        output_wav_name = os.path.splitext(file_name)[0]
+        text = chunkText.read_from_txt(file_path)
+        text = text.replace('..', '.') # Remove double periods
+        googleCloudTextToWav.synthesize_long_audio(projectID, location, bucketName, text, output_wav_name)
+
 # Streamlit app
 st.title('Ebook Processor')
 
@@ -122,12 +132,11 @@ if uploaded_file is not None:
         output_folder = f'output/{ebook_name}'      
 
         # Convert text in each file to WAV
-        for file_name in sorted(os.listdir(output_folder), key=lambda x: int(x.replace({ebook_name}, '').replace('.txt', ''))):
-            file_path = os.path.join(output_folder, file_name)
-            if file_path.endswith('.txt'):
-                output_wav_name = os.path.splitext(file_name)[0]
-                text = chunkText.read_from_txt(file_path)
-                text = text.replace('..', '.') # Remove double periods
-                googleCloudTextToWav.synthesize_long_audio(projectID, location, bucketName, text, output_wav_name)
-        
+        # Create a pool of processes
+        availableCores = multiprocessing.cpu_count() - 1
+        if availableCores < 1:
+            availableCores = 1
+        with Pool(processes=availableCores ) as pool:
+            # Apply the process_file function to each file in the output_folder
+            pool.starmap(process_file, [(file_name, output_folder, projectID, location, bucketName) for file_name in sorted(os.listdir(output_folder), key=lambda x: int(x.replace(ebook_name, '').replace('.txt', '')))])
         st.write('Text converted to WAV successfully')
