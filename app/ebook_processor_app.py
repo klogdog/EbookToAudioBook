@@ -44,7 +44,7 @@ def chunk_text(modified_txt_path):
     output_folder = f'output/{ebook_name}'
     
     # Split the text into multiple files
-    chunkText.split_text_into_files(text_content, output_folder=output_folder)
+    chunkText.split_text_into_files(text_content, output_folder=output_folder, ebookName= ebook_name)
     
     # Create a zip archive of the output folder
     shutil.make_archive(output_folder, 'zip', output_folder)

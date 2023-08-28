@@ -7,7 +7,7 @@ def save_as_txt(content, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(content)
 
-def split_text_into_files(text, words_per_file=500, output_folder='output'):
+def split_text_into_files(text, words_per_file=500, output_folder='output', ebookName="output_"):
     words = text.split()
     num_files = len(words) // words_per_file + (1 if len(words) % words_per_file else 0)
     
@@ -17,6 +17,6 @@ def split_text_into_files(text, words_per_file=500, output_folder='output'):
         start_idx = i * words_per_file
         end_idx = (i+1) * words_per_file
         chunk = ' '.join(words[start_idx:end_idx])
-        filename = f"{output_folder}/{output_folder}{i+1}.txt"
+        filename = f"{output_folder}/{ebookName}{i+1}.txt"
         save_as_txt(chunk, filename)
         print(f"Saved {filename}")
