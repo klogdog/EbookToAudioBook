@@ -1,4 +1,4 @@
-def insert_period_every_n_words(text, n=100):
+def insert_period_every_n_words(text, n=20):
     words = text.split()
     for i in range(n, len(words), n):
         words[i] = words[i] + '.'
