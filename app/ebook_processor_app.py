@@ -151,9 +151,9 @@ if uploaded_file is not None:
         # Zip the MP3 file
         mp3_file = uploaded_file.name.rsplit('.', 1)[0] + ".mp3"
         shutil.make_archive(mp3_file.rsplit('.', 1)[0], 'zip', '.', mp3_file)
-        zip_file = mp3_file + ".zip"
+        zip_file = uploaded_file.name.rsplit('.', 1)[0] + ".zip"
         
         # Make the zip file available for download
         with open(zip_file, 'rb') as f:
             bytes = f.read()
-        st.download_button('Download MP3 Zip File', data=bytes, file_name=f"{mp3_file}.zip", mime='application/zip')
+        st.download_button('Download MP3 Zip File', data=bytes, file_name=  uploaded_file.name.rsplit('.', 1)[0] + ".zip", mime='application/zip')
