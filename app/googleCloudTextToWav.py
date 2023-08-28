@@ -24,8 +24,8 @@ def synthesize_long_audio(project_id, location, bucketName, textToSpeak, output_
     """
     output_gcs_uri = 'gs://' + bucketName + '/' + output_file_name + '.wav'
     if(file_exists_in_gcs(bucketName, output_file_name + '.wav')):
-        print("File {output_file_name} exists in GCS bucket. Skipping text-to-speech conversion.")
         return
+    print(output_file_name)
     client = texttospeech.TextToSpeechLongAudioSynthesizeClient()
 
     input = texttospeech.SynthesisInput(
