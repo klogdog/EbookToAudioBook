@@ -30,3 +30,10 @@ Chunk the text
 Download the zip
 
 You now have a chuncked text of the ebook which is ready to be consumed by Google wavenet :)
+
+#This Part Costs $$ and assumes you have a GCP account
+Attach to the container and enter the following in command line
+```
+gcloud auth login
+```
+Follow the directions and authorize the container to use your google account
