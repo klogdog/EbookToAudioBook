@@ -21,4 +21,4 @@ docker run -p 8501:8501 ebook-processor
 ```
 
 Open a browser and navigate to the streamlit app
-[Link text Here](localhost:8501)]
+[Link text Here](localhost:8501)
