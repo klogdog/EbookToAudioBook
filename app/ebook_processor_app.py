@@ -5,6 +5,7 @@ import shutil
 import parseebook
 import breakUpLongSentences
 import chunkText
+import googleCloudTextToWav
 
 # Create a folder to store the uploaded files
 os.makedirs('uploads', exist_ok=True)
@@ -111,3 +112,21 @@ if uploaded_file is not None:
     if st.button('Chunk Text'):
         st.write('Chunking text...')
         chunk_text(st.session_state.modified_txt_path)
+
+    # Convert Text to WAV
+    if st.button('Convert Text to WAV'):
+        st.write('Converting text to WAV...')
+        
+        # Get the ebook's name
+        ebook_name = uploaded_file.name.rsplit('.', 1)[0]
+        output_folder = f'output/{ebook_name}'      
+      
+        # Convert text in each file to WAV
+        for file_name in os.listdir(output_folder):
+            file_path = os.path.join(output_folder, file_name)
+            if file_path.endswith('.txt'):
+                output_wav_name = os.path.splitext(file_name)[0]
+                text = chunkText.read_from_txt(file_path)
+                googleCloudTextToWav.synthesize_long_audio(projectID, location, bucketName, text, output_wav_name)
+        
+        st.write('Text converted to WAV successfully')
