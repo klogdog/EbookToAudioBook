@@ -1,3 +1,5 @@
 streamlit
 ebooklib
 beautifulsoup4
+# ... other dependencies
+google-cloud-texttospeech

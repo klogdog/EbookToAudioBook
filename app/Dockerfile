@@ -1,17 +1,23 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.8-slim-buster
+# Use the google/cloud-sdk base image
+FROM google/cloud-sdk:latest
 
-# Make a directory for our application
+# Install Python and pip
+RUN apt-get update && apt-get install -y python3-pip
+
+# Set the working directory
 WORKDIR /app
 
-# Copy the current directory (.) into the /app directory in the Docker image
-COPY . /app
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# Install the required packages
-RUN pip install -r requirements.txt
+# Install the Python packages
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Open port 8501 (default Streamlit port)
+# Copy the application files into the container
+COPY . .
+
+# Expose the port the app runs on
 EXPOSE 8501
 
-# Run the Streamlit app
+# Command to run the application
 CMD ["streamlit", "run", "ebook_processor_app.py"]
