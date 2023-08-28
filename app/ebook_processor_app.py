@@ -9,14 +9,14 @@ import chunkText
 # Create a folder to store the uploaded files
 os.makedirs('uploads', exist_ok=True)
 
-# Define the parse ebook function
 def parse_ebook(file_path):
     # Get the text content from the EPUB file
     epub_text = parseebook.read_epub_as_text(file_path)
+    cleaned_text = parseebook.remove_special_characters(epub_text)
     
     # Save the extracted text to a .txt file
     txt_path = file_path.parent / (file_path.stem + '.txt')
-    parseebook.save_as_txt(epub_text, txt_path)
+    parseebook.save_as_txt(cleaned_text, txt_path)
     
     return txt_path
 
