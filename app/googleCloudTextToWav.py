@@ -15,30 +15,23 @@
 from google.cloud import texttospeech
 
 
-def synthesize_long_audio(project_id, location, output_gcs_uri):
+def synthesize_long_audio(project_id, location, bucketName, text, output_file_name):
     """
     Synthesizes long input, writing the resulting audio to `output_gcs_uri`.
 
-    Example usage: synthesize_long_audio('12345', 'us-central1', 'gs://{BUCKET_NAME}/{OUTPUT_FILE_NAME}.wav')
+    Example usage: synthesize_long_audio('projectID', 'gcpLocation', 'bucketName', 'text to synthesize', 'outputFileName)
 
     """
-    # TODO(developer): Uncomment and set the following variables
-    # project_id = 'YOUR_PROJECT_ID'
-    # location = 'YOUR_LOCATION'
-    # output_gcs_uri = 'YOUR_OUTPUT_GCS_URI'
-
+    output_gcs_uri = 'gs://' + bucketName + '/' + output_file_name + '.wav'
     client = texttospeech.TextToSpeechLongAudioSynthesizeClient()
 
-    input = texttospeech.SynthesisInput(
-        text="Test input. Replace this with any text you want to synthesize, up to 1 million bytes long!"
-    )
-
+    input = texttospeech.SynthesisInput(text)
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16
     )
 
     voice = texttospeech.VoiceSelectionParams(
-        language_code="en-US", name="en-US-Standard-A"
+        language_code="en-US", name="en-US-Neural2-J"
     )
 
     parent = f"projects/{project_id}/locations/{location}"
