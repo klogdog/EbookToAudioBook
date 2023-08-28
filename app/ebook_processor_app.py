@@ -9,6 +9,7 @@ import googleCloudTextToWav
 import downloadAllBlobs
 import combineWaveFiles
 import multiprocessing
+import wavToMP3
 from multiprocessing import Pool
 
 # Create a folder to store the uploaded files
@@ -63,17 +64,6 @@ def chunk_text(modified_txt_path):
     # Split the text into multiple files
     chunkText.split_text_into_files(text_content, output_folder=output_folder, ebookName= ebook_name)
     
-    # Create a zip archive of the output folder
-    shutil.make_archive(output_folder, 'zip', output_folder)
-    zip_file = f"{output_folder}.zip"
-    
-    st.write('Text chunked successfully')
-    
-    # Make the zip file available for download
-    with open(zip_file, 'rb') as f:
-        bytes = f.read()
-    st.download_button('Download Zip File', data=bytes, file_name=f"{ebook_name}.zip", mime='application/zip')
-
 def process_file(file_name, output_folder, projectID, location, bucketName):
     file_path = os.path.join(output_folder, file_name)
     if file_path.endswith('.txt'):
@@ -153,3 +143,17 @@ if uploaded_file is not None:
         st.write('Combining wave files...')
         combineWaveFiles.combine_wav_files(uploaded_file.name.rsplit('.', 1)[0])
         st.write('wav file written successfully')
+    # Convert WAV to MP3
+    if st.button('Convert WAV to MP3'):
+        st.write('Converting..')
+        wavToMP3.convert_wav_to_mp3(uploaded_file.name.rsplit('.', 1)[0] + ".wav", uploaded_file.name.rsplit('.', 1)[0] + ".mp3")
+        st.write('mp3 file written successfully')
+        # Zip the MP3 file
+        mp3_file = uploaded_file.name.rsplit('.', 1)[0] + ".mp3"
+        shutil.make_archive(mp3_file.rsplit('.', 1)[0], 'zip', '.', mp3_file)
+        zip_file = mp3_file + ".zip"
+        
+        # Make the zip file available for download
+        with open(zip_file, 'rb') as f:
+            bytes = f.read()
+        st.download_button('Download MP3 Zip File', data=bytes, file_name=f"{mp3_file}.zip", mime='application/zip')
