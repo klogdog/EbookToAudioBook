@@ -10,6 +10,11 @@ WORKDIR /app
 # Copy the requirements file into the container
 COPY requirements.txt .
 
+# Update the package list, update pip, and install ffmpeg
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    pip install --upgrade pip
+
 # Install the Python packages
 RUN pip3 install --no-cache-dir -r requirements.txt
 
