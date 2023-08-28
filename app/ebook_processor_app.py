@@ -75,6 +75,9 @@ st.title('Ebook Processor')
 # ProjectID input
 projectID = st.text_input('Enter ProjectID')
 
+# GCS Bucket Name
+bucketName = st.text_input('Enter Bucket Name')
+
 # Location dropdown
 location = st.selectbox('Select Location', locations)
 
